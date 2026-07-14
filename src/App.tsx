@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Header } from './layout/Header';
 import { JobsPage } from './features/jobs/JobsPage';
 import { VacancyPage } from './features/jobs/VacancyPage';
+import { NotFoundPage } from './features/jobs/NotFoundPage';
 
 const App = () => {
   const theme = useMantineTheme();
@@ -34,9 +35,18 @@ const App = () => {
 
         <AppShell.Main>
           <Routes>
-            <Route path="/" element={<JobsPage />} />
-						<Route path="/vacancies" element={<JobsPage />} />
-						<Route path="/vacancies/:id" element={<VacancyPage />} />
+            <Route
+              path="/vacancies/moscow"
+              element={<JobsPage city="Москва" />}
+            />
+            <Route
+              path="/vacancies/petersburg"
+              element={<JobsPage city="Санкт‑Петербург" />}
+            />
+
+            <Route path="/vacancies/:id" element={<VacancyPage />} />
+
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </AppShell.Main>
       </AppShell>

@@ -2,8 +2,9 @@ import { Container, Grid, Title, Text, Flex } from '@mantine/core';
 import { JobsFilters } from './components/JobsFilters';
 import { JobsList } from './components/JobsList';
 import { SearchInput } from './components/SearchInput';
+import { JobsTabs } from './components/JobsTabs';
 
-export const JobsPage = () => {
+export const JobsPage = ({ city }: { city: string }) => {
   return (
     <Container size="lg" py="xl" style={{ maxWidth: 1200 }}>
       <Flex align="center" justify="space-between" mb="md">
@@ -19,13 +20,15 @@ export const JobsPage = () => {
         <SearchInput />
       </Flex>
 
+      <JobsTabs />
+
       <Grid gutter="xl">
         <Grid.Col span={{ base: 12, md: 5, lg: 4 }}>
           <JobsFilters />
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, md: 6, lg: 8 }}>
-          <JobsList />
+          <JobsList city={city} />
         </Grid.Col>
       </Grid>
     </Container>

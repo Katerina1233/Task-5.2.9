@@ -4,15 +4,15 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { loadJobs, setPage } from '../jobsSlice';
 import { JobCard } from './JobCard';
 
-export const JobsList = () => {
+export const JobsList = ({ city }: { city: string }) => {
   const dispatch = useAppDispatch();
   const { items, total, page, limit, loading, error } = useAppSelector(
     (s) => s.jobs
   );
 
   useEffect(() => {
-    dispatch(loadJobs());
-  }, [dispatch, page]);
+    dispatch(loadJobs({ city }));
+  }, [dispatch, page, city]);
 
   const totalPages = Math.ceil(total / limit) || 1;
 

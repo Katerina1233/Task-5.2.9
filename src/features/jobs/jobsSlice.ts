@@ -21,7 +21,7 @@ const initialState: JobsState = {
   page: 1,
   limit: 10,
   search: '',
-  city: 'Все',
+  city: 'Москва',
   skills: ['JavaScript', 'React', 'Redux', 'Python'],
   loading: false,
   error: null,
@@ -29,10 +29,17 @@ const initialState: JobsState = {
 
 export const loadJobs = createAsyncThunk(
   'jobs/loadJobs',
-  async (_, { getState }) => {
+  async ({ city }: { city: string }, { getState }) => {
     const state = getState() as { jobs: JobsState };
-    const { page, limit, search, city, skills } = state.jobs;
-    return await fetchJobs({ page, limit, search, city, skills });
+    const { page, limit, search, skills } = state.jobs;
+
+    return await fetchJobs({
+      page,
+      limit,
+      search,
+      city,
+      skills,
+    });
   },
 );
 
@@ -41,28 +48,28 @@ const jobsSlice = createSlice({
   initialState,
   reducers: {
     setSearch(state, action: PayloadAction<string>) {
-			state.search = action.payload;
-			state.page = 1;
-			state.error = null;
-		},
-    setCity(state, action: PayloadAction<JobsState['city']>) {
-			state.city = action.payload;
-			state.page = 1;
-			state.error = null;
-		},
-		addSkill(state, action: PayloadAction<string>) {
-			const skill = action.payload.trim();
-			if (skill && !state.skills.includes(skill)) {
-				state.skills.push(skill);
-				state.page = 1;
-				state.error = null;
-			}
-		},
-		removeSkill(state, action: PayloadAction<string>) {
-			state.skills = state.skills.filter((s) => s !== action.payload);
-			state.page = 1;
-			state.error = null;
-		},
+      state.search = action.payload;
+      state.page = 1;
+      state.error = null;
+    },
+    setCity(state, action: PayloadAction<string>) {
+      state.city = action.payload;
+      state.page = 1;
+      state.error = null;
+    },
+    addSkill(state, action: PayloadAction<string>) {
+      const skill = action.payload.trim();
+      if (skill && !state.skills.includes(skill)) {
+        state.skills.push(skill);
+        state.page = 1;
+        state.error = null;
+      }
+    },
+    removeSkill(state, action: PayloadAction<string>) {
+      state.skills = state.skills.filter((s) => s !== action.payload);
+      state.page = 1;
+      state.error = null;
+    },
     setPage(state, action: PayloadAction<number>) {
       state.page = action.payload;
     },
@@ -85,5 +92,7 @@ const jobsSlice = createSlice({
   },
 });
 
-export const { setSearch, setCity, addSkill, removeSkill, setPage } = jobsSlice.actions;
+export const { setSearch, setCity, addSkill, removeSkill, setPage } =
+  jobsSlice.actions;
+
 export default jobsSlice.reducer;
